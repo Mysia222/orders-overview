@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mvc:View
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m" 
+    controllerName="yulia.olhovik.controller.OrdersOverview">
+	<Page title="{i18n>OrdersOverviewPageTitle}">
+		<IconTabBar 
+      id="iconTabBar" 
+      expandable="false" 
+      applyContentPadding="false" 
+      select="handleStatesIconTabBarSelect">
+			<items>
+				<IconTabFilter 
+                    press="handleStatesIconTabBarSelect"
+                    key="all" 
+                    showAll="true" 
+                    count="{ordersfilterView>/ordersCount}" 
+                    text="{i18n>OrdersFilterProductsAll}" />
+				<IconTabSeparator />
+				<IconTabFilter
+                    press="handleStatesIconTabBarSelect" 
+                    key="pending" 
+                    count="{ordersfilterView>/pending}" 
+                    icon="sap-icon://pending" 
+                    iconColor="Negative" 
+                    text="{i18n>OrdersFilterPending}" />
+				<IconTabFilter 
+                    count="{ordersfilterView>/accepted}" 
+                    press="handleStatesIconTabBarSelect"
+                    key="accepted" 
+                    icon="sap-icon://accept" 
+                    iconColor="Positive" 
+                    text="{i18n>OrdersFilterAccepted}" />
+			</items>
+			<content>
+				<Table 
+                    mode="Delete" 
+                    delete="onDeleteOrderPress" 
+                    items="{odata>/Orders}" 
+                    type="Navigation" 
+                    id="orderTable" 
+                   backgroundDesign="Soild"
+            class="sapUiContentPadding sapUiResponsivePadding">
+					<headerToolbar>
+						<OverflowToolbar>
+							<ToolbarSpacer />
+							<OverflowToolbarButton 
+                                type="Transparent" 
+                                text="Add" 
+                                icon="sap-icon://add" 
+                                press="onCreateOrderPress"/>
+						</OverflowToolbar>
+					</headerToolbar>
+					<columns width="70%">
+						<Column
+                        minScreenWidth="Tablet" demandPopin="true"
+				>
+							<header>
+								<Label text="{i18n>IDTitle}" />
+							</header>
+						</Column>
+						<Column mergeDuplicates="true">
+							<header>
+								<Label text="{i18n>CustomerTitle}" />
+							</header>
+						</Column>
+						<Column minScreenWidth="Tablet" demandPopin="true">
+							<header>
+								<Label text="{i18n>TableCreatedDateColumnTitle}" />
+							</header>
+						</Column>
+						<Column
+                       minScreenWidth="Tablet" demandPopin="true">
+							<header>
+								<Label text="{i18n>TableShippedDateColumnTitle}" />
+							</header>
+						</Column>
+						<Column
+                        minScreenWidth="Tablet"
+				demandPopin="true">
+							<header>
+								<Label text="{i18n>StatusTitle}" />
+							</header>
+						</Column>
+						<Column hAlign="End"
+				>
+							<header>
+								<Label text="{i18n>TotalPriceTitle}" />
+							</header>
+						</Column>
+						<Column
+                        minScreenWidth="Tablet"
+				demandPopin="true">
+							<header>
+								<Label text="{i18n>TableShipCountryColumnTitle}" />
+							</header>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem 
+                        vAlign="Middle" 
+                        type="Navigation" 
+                        press="onOpenOrderDetailsPagePress">
+							<ObjectIdentifier text="{odata>id}" />
+							<Text text="{odata>summary/customer}" />
+							<Text text="{
+                                    path: 'odata>summary/createdAt',     
+                                    formatter: '.ISODateFormatter'    
+                                    }" />
+							<Text text="{     
+                                    path: 'odata>summary/shippedAt',     
+                                    formatter: '.ISODateFormatter'    
+                                    }" />
+							<Text text="{odata>summary/status}" />
+							<ObjectNumber 
+                                    number="{         
+                                    parts:[{path:'odata>summary/totalPrice'},
+                                    {   path:'odata>summary/currency'}],         
+                                        type: 'sap.ui.model.type.Currency',         
+                                        formatOptions: {showMeasure: false}  
+                                    }" 
+                                    unit="{odata>summary/currency}" />
+							<Text text="{odata>shipTo/country}" />
+						</ColumnListItem>
+					</items>
+				</Table>
+			</content>
+		</IconTabBar>
+	</Page>
+</mvc:View>

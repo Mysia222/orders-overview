@@ -1,0 +1,105 @@
+{
+    "_version": "1.1.0",
+    "sap.app": {
+        "_version": "1.1.0",
+        "id": "yulia.olhovik",
+        "type": "application",
+        "i18n": "i18n/i18n.properties",
+        "title": "{{appTitle}}",
+        "description": "{{appDescription}}",
+        "applicationVersion": {
+            "version": "1.0.0"
+        },
+        "dataSources": {
+            "mainService": {
+                "uri": "http://localhost:3000/odata",
+                "type": "OData",
+                "settings": {
+                    "odataVersion": "2.0"
+                }
+            }
+        }
+    },
+    "sap.ui": {
+        "_version": "1.1.0",
+        "technology": "UI5",
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": true
+        },
+        "supportedThemes": [
+            "sap_bluecrystal"
+        ]
+    },
+    "sap.ui5": {
+        "_version": "1.1.0",
+        "rootView": "yulia.olhovik.view.App",
+        "dependencies": {
+            "minUI5Version": "1.30",
+            "libs": {
+                "sap.m": {}
+            }
+        },
+        "routing": {
+            "config": {
+                "routerClass": "sap.m.routing.Router",
+                "viewType": "XML",
+                "viewPath": "yulia.olhovik.view",
+                "controlId": "app",
+                "controlAggregation": "pages",
+                "async": true
+            },
+            "routes": [{
+                    "pattern": "",
+                    "name": "OrdersOverview",
+                    "target": "ordersOverview"
+                },
+                {
+                    "pattern": "Orders/{OrderID}",
+                    "name": "OrdersDetails",
+                    "target": "ordersDetails"
+                },
+                {
+                    "pattern": "OrderProducts/{ProductID}/comments",
+                    "name": "ProductsDetails",
+                    "target": "productsDetails"
+                }
+            ],
+            "targets": {
+                "ordersOverview": {
+                    "viewName": "OrdersOverview",
+                    "viewId": "ordersOverview",
+                    "viewLevel": 1
+                },
+                "ordersDetails": {
+                    "viewName": "OrdersDetails",
+                    "viewId": "ordersDetails",
+                    "viewLevel": 2
+                },
+                "productsDetails": {
+                    "viewName": "ProductDetails",
+                    "viewId": "productsDetails",
+                    "viewLevel": 3
+                }
+            }
+        },
+        "models": {
+            "odata": {
+                "dataSource": "mainService",
+                "settings": {
+                    "defaultBindingMode": "TwoWay",
+                    "defaultCountMode": "Inline",
+                    "useBatch": false,
+                    "disableHeadRequestForToken": true
+                }
+            },
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": {
+                    "bundleName": "yulia.olhovik.i18n.i18n"
+                }
+            }
+        }
+    }
+}

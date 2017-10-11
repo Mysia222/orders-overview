@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="yulia.olhovik.controller.ProductDetails">
+   <Page title="{i18n>ProductsDetailsPageTitle}" showNavButton="true" navButtonPress="onNavBack">
+      <ObjectHeader 
+      title="{odata>name}" 
+      backgroundDesign="Solid"
+      number="{      
+            parts:[{path:'odata>totalPrice'},{path:'odata>currency'}],      
+            type: 'sap.ui.model.type.Currency',  
+            formatOptions: {showMeasure: false}}" 
+      numberUnit="{odata>currency}">
+         <ObjectAttribute text="Quentity: {odata>quantity}, price: {odata>price}" />
+      </ObjectHeader>
+      <VBox id="feedBackBox">
+
+      <HBox width="32%" class="sapUiTinyMarginTop" alignItems="Center"  >
+         <Label text="{i18n>ProductsDetailsAuthorName}" class="sapUiTinyMarginBeginEnd " />
+         <Input placeholder="{i18n>ProductsDetailsInputplaceholder}" value="{author}"  />
+         <Label text="{i18n>ProductsDetailsRatingInLabel}" class="sapUiTinyMarginBegin" />
+         <RatingIndicator maxValue="5" value="{rating}"  tooltip="Rating Tooltip" />
+      </HBox>
+
+      <FeedInput 
+      class="sapUiForceWidthAuto sapUiTinyMarginBeginEnd" 
+      post="onPostComment" showIcon="true" 
+      value="{comment}"
+      placeholder="{i18n>ProductsDetailsFeedplaceholder}" />
+        </VBox>
+      <List items="{odata>comments}" showSeparators="Inner" class="sapUiForceWidthAuto sapUiTinyMarginBeginEnd">
+         <items>
+            <FeedListItem 
+            sender="{odata>author}" 
+            icon="sap-icon://person-placeholder" 
+            iconDensityAware="false" 
+            info="{i18n>ProductsDetailsRatingInList}: {odata>rating}" 
+            text="{odata>comment}" />
+         </items>
+      </List>
+    
+   </Page>
+</mvc:View>

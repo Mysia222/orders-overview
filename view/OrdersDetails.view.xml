@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mvc:View 
+xmlns:mvc="sap.ui.core.mvc" 
+xmlns="sap.m" 
+xmlns:f="sap.ui.layout.form" 
+xmlns:layout="sap.ui.layout" 
+xmlns:u="sap.uxap" 
+controllerName="yulia.olhovik.controller.OrdersDetails">
+   <Page title="{i18n>OrdersDetailsPageTitle}" showNavButton="true" navButtonPress="onNavBack">
+      <content>
+         <u:ObjectPageLayout upperCaseAnchorBar="false" id="ObjectPageLayout" enableLazyLoading="false">
+            <u:headerTitle>
+               <u:ObjectPageHeader 
+               objectTitle="
+               {
+               parts: [
+							'odata>id',
+							'odata>summary/createdAt'
+						],
+						formatter: '.PageHeaderFormatter'
+					}" 
+               objectSubtitle="{
+						parts: [
+							'i18n>OrdersDetailsheaderSubTitle',
+							'odata>summary/totalPrice',
+							'odata>summary/currency'
+						],
+						formatter: 'jQuery.sap.formatMessage'
+					}"  />
+            </u:headerTitle>
+            <u:headerContent>
+               <layout:VerticalLayout>
+                  <ObjectStatus title="{i18n>StatusTitle}" text="{odata>summary/status}" />
+                  <ObjectStatus title="{i18n>CustomerTitle}" text="{odata>summary/customer}" />
+               </layout:VerticalLayout>
+            </u:headerContent>
+            <u:sections>
+               <u:ObjectPageSection title="{i18n>PageShippedSectionTitle}" titleUppercase="false">
+                  <u:subSections>
+                     <u:ObjectPageSubSection title=" ">
+                        <u:blocks>
+                           <f:SimpleForm 
+                           id="SimpleFormToolbar" editable = "true" 
+                           layout="ResponsiveGridLayout"
+			labelSpanL="1"
+			emptySpanL="4"
+			labelSpanM="2"
+			emptySpanM="0"
+			columnsL="1"
+			columnsM="1">
+                              <f:toolbar>
+                                 <Toolbar id="TB1">
+                                    <Title text="{i18n>PageShippedFormTitle}" level="H4" titleStyle="H4" />
+
+                    <Button icon="sap-icon://edit" id="shipEditButton" visible="{= !${appView>/shipEdit} }" press="onEditShipToInfoPress" />
+					<Button icon="sap-icon://save" id="shipSaveButton" visible="{appView>/shipEdit}" press="onSaveShipToInfoPress" />
+					<Button icon="sap-icon://cancel" id="shipCancelButton" visible="{appView>/shipEdit}" press="onCancelShipToInfoPress" />
+                                    
+                                 </Toolbar>
+                              </f:toolbar>
+                              <f:content>
+                                 <Label text="{i18n>FormShippedNameLabel}" />
+                                 <Input  editable = "{= ${appView>/shipEdit} }" value="{odata>shipTo/name}" />
+                                 <Label text="{i18n>FormShippedAddressLabel}" />
+                                 <Input editable = "{= ${appView>/shipEdit} }" value="{odata>shipTo/address}" />
+                                 <Label text="{i18n>FormShippedZIPLabel}" />
+                                 <Input editable = "{= ${appView>/shipEdit} }" value="{odata>shipTo/ZIP}" />
+                                 <Label text="{i18n>FormShippedRegionLabel}" />
+                                 <Input editable = "{= ${appView>/shipEdit} }" value="{odata>shipTo/region}" />
+                                 <Label text="{i18n>FormShippedCountryLabel}" />
+                                 <Input editable = "{= ${appView>/shipEdit} }" value="{odata>shipTo/country}" />
+                              </f:content>
+                           </f:SimpleForm>
+                        </u:blocks>
+                     </u:ObjectPageSubSection>
+                  </u:subSections>
+               </u:ObjectPageSection>
+               <u:ObjectPageSection title="{i18n>PageCustomerSectionTitle}" titleUppercase="false">
+                  <u:subSections>
+                     <u:ObjectPageSubSection title=" ">
+                        <u:blocks>
+                           <f:SimpleForm  id="form1" editable = "true" layout="ResponsiveGridLayout"
+               
+			labelSpanL="1"
+			emptySpanL="4"
+			labelSpanM="2"
+			emptySpanM="0"
+			columnsL="1"
+			columnsM="1">
+                              <f:toolbar>
+                                 <Toolbar id="TB2">
+                                    <Title text="{i18n>PageCustomerFormTitle}" level="H4" titleStyle="H4" />
+                                   <Button icon="sap-icon://edit" id="costumerEditButton" visible="{= !${appView>/costumerEdit} }" press="onEditShipToInfoPress" />
+					<Button icon="sap-icon://save" id="costumerSaveButton" visible="{appView>/costumerEdit}" press="onSaveShipToInfoPress" />
+					<Button icon="sap-icon://cancel" id="costumerCancelButton" visible="{appView>/costumerEdit}" press="onCancelShipToInfoPress" />
+                                 </Toolbar>
+                              </f:toolbar>
+                              <f:content>
+                                 <Label text="{i18n>FormCustomerFirstNameLabel}" />
+                                 <Input  editable = "{= ${appView>/costumerEdit} }" value="{odata>customerInfo/firstName}" />
+                                 <Label text="{i18n>FormCustomerLastNameLabel}" />
+                                 <Input  editable = "{= ${appView>/costumerEdit} }" value="{odata>customerInfo/lastName}" />
+                                 <Label text="{i18n>FormCustomerAddressLabel}" />
+                                 <Input  editable = "{= ${appView>/costumerEdit} }" value="{odata>customerInfo/address}" />
+                                 <Label text="{i18n>FormCustomerPhoneLabel}" />
+                                 <Input  editable = "{= ${appView>/costumerEdit} }" value="{odata>customerInfo/phone}" />
+                                 <Label text="{i18n>FormCustomerEmailLabel}" />
+                                 <Input  editable = "{= ${appView>/costumerEdit} }" value="{odata>customerInfo/email}" />
+                              </f:content>
+                           </f:SimpleForm>
+                        </u:blocks>
+                     </u:ObjectPageSubSection>
+                  </u:subSections>
+               </u:ObjectPageSection>
+               <u:ObjectPageSection title="{i18n>PageProductsSectionTitle}" titleUppercase="false">
+                  <u:subSections>
+                     <u:ObjectPageSubSection title=" ">
+                        <u:blocks>
+                           <Table mode="Delete" 
+                           delete="onDeleteProductPress" type="Navigation" items="{odata>products}"
+                            backgroundDesign="Soild"
+            class="sapUiContentPadding sapUiResponsivePadding">
+                              <headerToolbar>
+                                 <OverflowToolbar>
+                                    <ToolbarSpacer />
+                                    <OverflowToolbarButton type="Transparent" icon="sap-icon://add" press="onCreateProductPress" />
+                                 </OverflowToolbar>
+                              </headerToolbar>
+                              <columns width="70%">
+                                 <Column minScreenWidth="Tablet" demandPopin="true">
+                                    <header>
+                                       <Label text="{i18n>IDTitle}" />
+                                    </header>
+                                 </Column>
+                                 <Column mergeDuplicates="true">
+                                    <header>
+                                       <Label text="{i18n>TableProductNameColumnTitle}" />
+                                    </header>
+                                 </Column>
+                                 <Column minScreenWidth="Tablet" demandPopin="true">
+                                    <header>
+                                       <Label text="{i18n>TableProductPriceColumnTitle}" />
+                                    </header>
+                                 </Column>
+                                 <Column minScreenWidth="Tablet" demandPopin="true">
+                                    <header>
+                                       <Label text="{i18n>TableProductQuentityColumnTitle}" />
+                                    </header>
+                                 </Column>
+                                 <Column >
+                                    <header>
+                                       <Label text="{i18n>TotalPriceTitle}" />
+                                    </header>
+                                 </Column>
+                              </columns>
+                              <items>
+                                 <ColumnListItem vAlign="Middle" type="Navigation" press="onOpenOrderProductPagePress">
+                                    
+                                    <ObjectIdentifier text="{odata>id}" />
+                                    <Text text="{odata>name}" />
+                                    <ObjectNumber number="{
+                                    parts:[{path:'odata>price'},{path:'odata>currency'}],         
+                                    type: 'sap.ui.model.type.Currency',        
+                                    formatOptions: {showMeasure: false}
+                                    }" unit="{odata>currency}" />
+                                    <Text text="{odata>quantity}" />
+                                    <ObjectNumber number="{         
+                                    parts:[{path:'odata>totalPrice'},
+                                    {path:'odata>currency'}],         
+                                    type: 'sap.ui.model.type.Currency',         
+                                    formatOptions: {showMeasure: false}        
+                                    }" 
+                                    unit="{odata>currency}" />
+
+                                 </ColumnListItem>
+                              </items>
+                           </Table>
+                        </u:blocks>
+                     </u:ObjectPageSubSection>
+                  </u:subSections>
+               </u:ObjectPageSection>
+            </u:sections>
+         </u:ObjectPageLayout>
+      </content>
+   </Page>
+</mvc:View>
